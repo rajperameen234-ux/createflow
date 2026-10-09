@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+
+    /* Hairline system: almost invisible at rest, present on interaction. */
+    --cf-line: rgba(255, 255, 255, 0.07);
+    --cf-line-strong: rgba(255, 255, 255, 0.12);
+    --cf-line-focus: rgba(222, 172, 80, 0.55);
+    --cf-accent: 222, 172, 80;
+
+    --cf-rail: 13.5rem;
+    --cf-topbar: 3.25rem;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-base-1000 text-fg text-base antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01', 'tnum';
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Numbers align in tables and file listings. */
+  .tabular,
+  code,
+  kbd {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: rgba(var(--cf-accent), 0.28);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cf-line-focus);
+    outline-offset: 1px;
+    border-radius: 4px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.09);
+    border: 3px solid transparent;
+    border-radius: 99px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+    background-clip: content-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------------------------
+     Surfaces — flat, separated by hairlines, never by glow
+     ------------------------------------------------------------------ */
+  .surface {
+    @apply rounded-lg border border-white/[0.07] bg-base-900;
+  }
+
+  .surface-raised {
+    @apply rounded-lg border border-white/[0.09] bg-base-850 shadow-pop;
+  }
+
+  .surface-sunken {
+    @apply rounded-lg border border-white/[0.06] bg-base-950;
+  }
+
+  .surface-inset {
+    @apply rounded-md border border-white/[0.05] bg-base-1000;
+  }
+
+  .hairline-t {
+    @apply border-t border-white/[0.07];
+  }
+  .hairline-b {
+    @apply border-b border-white/[0.07];
+  }
+
+  /* ------------------------------------------------------------------
+     Type
+     ------------------------------------------------------------------ */
+  .eyebrow {
+    @apply text-2xs font-medium uppercase tracking-[0.13em] text-fg-faint;
+  }
+
+  .meta {
+    @apply text-2xs text-fg-faint;
+  }
+
+  .num {
+    @apply font-mono text-2xs tabular text-fg-muted;
+  }
+
+  .title-lg {
+    @apply text-2xl font-semibold tracking-[-0.02em] text-fg;
+  }
+
+  /* ------------------------------------------------------------------
+     Controls
+     ------------------------------------------------------------------ */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-1.5 rounded-md px-3
+      text-sm font-medium transition-all duration-150 ease-out
+      disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  .btn-primary {
+    @apply btn bg-brass-400 text-base-1000;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.24) inset;
+  }
+  .btn-primary:hover:not(:disabled) {
+    @apply bg-brass-300;
+  }
+  .btn-primary:active:not(:disabled) {
+    @apply bg-brass-500;
+  }
+
+  .btn-secondary {
+    @apply btn border border-white/[0.10] bg-white/[0.03] text-fg;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    @apply border-white/[0.18] bg-white/[0.06];
+  }
+  .btn-secondary:active:not(:disabled) {
+    @apply bg-white/[0.04];
+  }
+
+  .btn-ghost {
+    @apply btn text-fg-muted;
+  }
+  .btn-ghost:hover:not(:disabled) {
+    @apply bg-white/[0.05] text-fg;
+  }
+
+  .btn-danger {
+    @apply btn border border-state-err/30 bg-state-err/10 text-state-err;
+  }
+  .btn-danger:hover:not(:disabled) {
+    @apply border-state-err/50 bg-state-err/20;
+  }
+
+  /* ------------------------------------------------------------------
+     Fields
+     ------------------------------------------------------------------ */
+  .field {
+    @apply w-full rounded-md border border-white/[0.09] bg-base-1000 px-2.5 py-2
+      text-sm text-fg transition-colors duration-150
+      placeholder:text-fg-ghost hover:border-white/[0.14]
+      focus:border-brass-400/70 focus:outline-none
+      focus:ring-[3px] focus:ring-brass-400/[0.14] disabled:opacity-50;
+  }
+
+  .field-invalid {
+    @apply border-state-err/60 focus:border-state-err focus:ring-state-err/15;
+  }
+
+  .field-label {
+    @apply text-2xs font-medium uppercase tracking-[0.1em] text-fg-faint;
+  }
+
+  .field-help {
+    @apply text-2xs leading-relaxed text-fg-ghost;
+  }
+
+  .field-error {
+    @apply flex items-start gap-1 text-2xs font-medium text-state-err;
+  }
+
+  /* ------------------------------------------------------------------
+     Chrome
+     ------------------------------------------------------------------ */
+  .rail-item {
+    @apply relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm
+      font-medium text-fg-muted transition-colors duration-150;
+  }
+  .rail-item:hover {
+    @apply bg-white/[0.04] text-fg;
+  }
+  .rail-item-active {
+    @apply bg-white/[0.06] text-fg;
+  }
+  .rail-item-active::before {
+    content: '';
+    @apply absolute -left-2 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full bg-brass-400;
+  }
+
+  .tab {
+    @apply relative px-3 py-2 text-sm font-medium text-fg-muted transition-colors
+      duration-150 hover:text-fg;
+  }
+  .tab-active {
+    @apply text-fg;
+  }
+  .tab-active::after {
+    content: '';
+    @apply absolute inset-x-2 -bottom-px h-px bg-brass-400;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded border border-white/[0.09]
+      bg-white/[0.03] px-1.5 py-0.5 text-2xs font-medium text-fg-muted;
+  }
+
+  .dot {
+    @apply h-1.5 w-1.5 shrink-0 rounded-full;
+  }
+
+  /* Canvas grid: the only "texture" in the product, used behind artwork. */
+  .artboard {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+    animation: sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+}
